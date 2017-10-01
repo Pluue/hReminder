@@ -27,18 +27,13 @@ export class TaskForm extends React.Component {
         reminderDate: '',
         subject: {},
         priority: 1,
-        //daysFromNow: this.getDaysFromNow(), //WILL DEFINITELY CAUSE PROBLEMS
-        //defaultSortIndex: Math.pow(1.5, this.state.newTask.priority) / this.state.newTask.daysFromNow
+        deletion: false,
+        key: 0
+        
       },
     };
   }
-  getDaysFromNow() {
-    return Math.round(
-      Math.abs(
-        (new Date().getTime() - this.state.newTask.dueDate.getTime()) / (24 * 60 * 60 * 1000)
-      ) // hours*minutes*seconds*milliseconds = full unix day
-    );
-  }
+ //Sets the form as either visible or not visible
   showForm(visible) {
     this.setState({ isShown: visible });
   }
@@ -166,23 +161,18 @@ export class TaskForm extends React.Component {
               
                 justifyContent="flex-start"
                 title="Submission Button"
+                //Submits the newTask object in state as a new Task, closes the popup, resets fields to default
                 onPress={() => {
                   if(this.state.canSubmit[0] && this.state.canSubmit[1]){
-                  this.props.onAddNewTask(this.state.newTask);
-                  this.showForm(!this.state.isShown);
-                  this.setState({
-                    canSubmit: [false, false], newTask: { label: '', subtitle: '', description: '', subject: {}, defaultSortIndex: 1, daysFromNow: ''},
+                    this.props.onAddNewTask(this.state.newTask);
+                    this.showForm(!this.state.isShown);
+                    this.setState({
+                      canSubmit: [false, false], newTask: { label: '', subtitle: '', description: '', subject: {}, defaultSortIndex: 1, daysFromNow: '', deletion: false, key: this.state.newTask.key + 1},
                   });
                 }else{Alert.alert('Invalid Data', 'Please add a valid due date and subject', [{text: 'OK'}])}
                 }}
               />
             </View>
-            {/* <View 
-              justifyContent="center"
-              alignItems="flex-end">
-              <Text>Right hand side</Text>
-            </View> */}
-
             </View>
           </View>
         </Modal>

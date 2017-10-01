@@ -18,6 +18,7 @@ var taskKey = 1;
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+    this.checkDeletion = this.checkDeletion.bind(this);
     this.state = {
       tasks: [],
     };
@@ -26,6 +27,21 @@ export default class App extends React.Component {
   onAddNewTask = task => {
     this.setState({ tasks: [...this.state.tasks, task] });
   };
+  //Compares the key values of the selected Task in the list, deletes it task from the tasks array
+  checkDeletion(key) {
+    for (let i = 0; i < this.state.tasks.length; i++) {
+      if (key === this.state.tasks[i].key) {
+        this.setState({
+          tasks: this.state.tasks.splice(i, 1),
+        });
+
+        this.setState({
+          tasks: this.state.tasks,
+        });
+      }
+    }
+  }
+
   render() {
     return (
       <View>
@@ -34,22 +50,31 @@ export default class App extends React.Component {
         </View>
         {/*instance of new task form, passing the onAddNewTask function from the parent*/}
 
-        <TaskForm onAddNewTask={this.onAddNewTask} />
+        <TaskForm onAddNewTask={this.onAddNewTask} testFunc={this.testFunc} />
 
         {/*ScrollView allows for infinite scrolling as more components are added*/}
         <ScrollView>
           <View style={{ flexDirection: 'column', height: '90%', padding: 20 }}>
+            {/*Sorts the tasks based on a combination of their priority and due date*/}
             {sortTasksDefault(this.state.tasks)}
             {/*Creates a new Task component for each item in tasks, passing through the task as props*/}
-            {this.state.tasks.map(task =>
-              <Task newTask={task} key={(taskKey = taskKey + 1)} />
-            )}
+            {this.state.tasks.map(task => {
+              return (
+                <Task
+                  newTask={task}
+                  key={(taskKey = taskKey + 1)}
+                  checkDeletion={this.checkDeletion}
+                  testFunc={this.testFunc}
+                />
+              );
+            })}
           </View>
         </ScrollView>
       </View>
     );
   }
 }
+//Sorts functions based on their 'defaultSortIndex', from highest to lowest
 function sortTasksDefault(tasks) {
   let length = tasks.length;
   for (let i = 0; i < length - 1; i++) {
@@ -68,19 +93,7 @@ function sortTasksDefault(tasks) {
       tasks[max] = tmp;
     }
   }
-  console.log(tasks);
 }
-
-subjectList = [
-  {
-    name: 'Methods',
-    col: 'blue',
-  },
-  {
-    name: 'SoftwareDev',
-    col: 'red',
-  },
-];
 
 const styles = StyleSheet.create({
   container: {
