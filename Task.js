@@ -11,7 +11,9 @@ export class Task extends React.Component {
   //Calculates the number with which the task will be sorted.
   //Based on combination of daysFromNow and priority
   static getDefaultSortIndex(task) {
-    return Math.pow(1.5, task.priority) / Task.getDaysFromNow(task.dueDate);
+    return (
+      Math.pow(1.5, task.priority) / (Task.getDaysFromNow(task.dueDate) + 1)
+    );
   }
   //Calculates the amount of days between the current date and a selected date
   static getDaysFromNow(date) {
