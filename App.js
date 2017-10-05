@@ -28,6 +28,7 @@ export default class App extends React.Component {
     this.setState({ tasks: [...this.state.tasks, task] });
   };
   //Compares the key values of the selected Task in the list, deletes it task from the tasks array
+  //key is the unique identifier given to each task object
   checkDeletion(key) {
     for (let i = 0; i < this.state.tasks.length; i++) {
       if (key === this.state.tasks[i].key) {
@@ -48,8 +49,8 @@ export default class App extends React.Component {
         <View style={styles.header} padding={40}>
           <Text style={styles.test}> hReminder </Text>
         </View>
-        {/*instance of new task form, passing the onAddNewTask function from the parent*/}
 
+        {/*instance of new task form, passing the onAddNewTask function from the parent*/}
         <TaskForm onAddNewTask={this.onAddNewTask} testFunc={this.testFunc} />
 
         {/*ScrollView allows for infinite scrolling as more components are added*/}
@@ -75,6 +76,8 @@ export default class App extends React.Component {
   }
 }
 //Sorts functions based on their 'defaultSortIndex', from highest to lowest
+//max refers to the current highest value of the sweep
+//tmp is used to store the pivot's value as it is swapped with the max
 function sortTasksDefault(tasks) {
   let length = tasks.length;
   for (let i = 0; i < length - 1; i++) {

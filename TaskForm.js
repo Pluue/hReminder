@@ -141,13 +141,12 @@ export class TaskForm extends React.Component {
                       this.setState({
                       newTask: { ...this.state.newTask, subject: itemValue }, canSubmit: [this.state.canSubmit[0], true]
                     })}
-                  
                   }
                     
                   
                     }
                 >
-                {/* {this.props.subjectList.map( subject => <Picker.Item label={subject.name} value={subject} key={j=(j+1)}/>)} */}
+                {/* The list of subject option options is defined here */}
                 <Picker.Item label="-Subject-" value={false} />
                 <Picker.Item label="Methods" value={{name: "Methods", col: "red"}} />
                 <Picker.Item label="Software Dev" value={{name: "Software Dev", col: "blue"}} />
